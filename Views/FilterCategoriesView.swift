@@ -23,6 +23,14 @@ struct FilterCategoriesView: View {
                 }
                 .padding(.horizontal)
             }
+            
+            if selectedCategories.count > 0{
+                Button(role: .destructive){
+                    self.selectedCategories.removeAll()
+                } label: {
+                    Text("Clear all filter selection \(self.selectedCategories.count)")
+                }
+            }
         }
     }
     
@@ -40,7 +48,26 @@ struct FilterButtonView: View {
     var isSelected: Bool
     var onTab: (Category) -> ()
     var body: some View {
-        /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Hello, world!@*/Text("Hello, world!")/*@END_MENU_TOKEN@*/
+        HStack(spacing: 4){
+            Text(category.rawValue.capitalized)
+                .fixedSize(horizontal: true, vertical: true)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 4)
+        .background{
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(isSelected ? category.color:
+                            Color.gray, lineWidth: 1)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 16)
+                        .foregroundStyle(isSelected ? category.color: Color.clear)
+                }
+        }
+        .frame(height: 44)
+        .onTapGesture {
+            self.onTab(category)
+        }
+        .foregroundColor(isSelected ? Color.white : nil)
     }
 }
 

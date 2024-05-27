@@ -5,9 +5,10 @@
 //  Created by Aydın KAYA on 20.05.2024.
 //
 
+
+import FirebaseFirestore
 import Foundation
 import Observation
-
 
 
 @Observable
@@ -22,5 +23,13 @@ class LogListViewModel {
     var isLogFormPresented = false
     var logToEdit: ExpenseLog?
     
-    
+    var predicates: [QueryPredicate] {
+           var predicates = [QueryPredicate]()
+           if selectedCategories.count > 0 {
+               predicates.append(.whereField("category", isIn: Array(selectedCategories).map { $0.rawValue }))
+           }
+           
+           predicates.append(.order(by: sortType.rawValue, descending: sortOrder == .descending ? true : false))
+           return predicates
+       }
 }

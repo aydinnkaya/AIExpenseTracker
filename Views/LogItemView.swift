@@ -56,7 +56,7 @@ struct LogItemView: View {
         ForEach([
             ExpenseLog(id: "1", name: "sushi", category: "Food", amount: 10, date: .now),
             ExpenseLog(id: "2", name: "Electricity", category: "Utilities", amount: 50, date: .now)
-        ]) { log in
+                ]) { log in
             LogItemView(log: log)
         }
     }

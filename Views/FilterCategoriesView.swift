@@ -13,67 +13,65 @@ struct FilterCategoriesView: View {
     private let categories = Category.allCases
     
     var body: some View {
-        VStack{
-            ScrollView(.horizontal){
-                HStack(spacing: 8){
-                    ForEach(categories){ category in
-                        FilterButtonView(category: category, isSelected: self.selectedCategories.contains(category), onTab: self.onTab)
-                        
+        VStack {
+            ScrollView(.horizontal) {
+                HStack(spacing: 8) {
+                    ForEach(categories) { category in
+                        FilterButtonView(category: category, isSelected: self.selectedCategories.contains(category), onTap: self.onTap)
                     }
                 }
                 .padding(.horizontal)
             }
             
-            if selectedCategories.count > 0{
-                Button(role: .destructive){
+            if selectedCategories.count > 0 {
+                Button(role: .destructive) {
                     self.selectedCategories.removeAll()
                 } label: {
-                    Text("Clear all filter selection \(self.selectedCategories.count)")
+                    Text("Clear all filter selection (\(self.selectedCategories.count))")
                 }
             }
+            
         }
     }
     
-    func onTab(category: Category){
-        if selectedCategories.contains(category){
+    func onTap(category: Category) {
+        if selectedCategories.contains(category) {
             selectedCategories.remove(category)
-        }
-        else {
+        } else {
             selectedCategories.insert(category)
         }
     }
 }
+
 struct FilterButtonView: View {
+    
     var category: Category
     var isSelected: Bool
-    var onTab: (Category) -> ()
+    var onTap: (Category) -> ()
+    
     var body: some View {
-        HStack(spacing: 4){
+        HStack(spacing: 4) {
             Text(category.rawValue.capitalized)
-                .fixedSize(horizontal: true, vertical: true)
+                .fixedSize(horizontal: true, vertical: /*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 4)
-        .background{
+        .background {
             RoundedRectangle(cornerRadius: 16)
-                .stroke(isSelected ? category.color:
-                            Color.gray, lineWidth: 1)
+                .stroke(isSelected ? category.color : Color.gray, lineWidth: 1)
                 .overlay {
-                    RoundedRectangle(cornerRadius: 16)
-                        .foregroundStyle(isSelected ? category.color: Color.clear)
+                    RoundedRectangle(cornerRadius: 16).foregroundColor(isSelected ? category.color : Color.clear)
                 }
         }
         .frame(height: 44)
         .onTapGesture {
-            self.onTab(category)
+            self.onTap(category)
         }
-        .foregroundColor(isSelected ? Color.white : nil)
+        .foregroundColor(isSelected ? .white : nil)
     }
 }
 
-
 #Preview {
     @State var vm = LogListViewModel()
-    
     return FilterCategoriesView(selectedCategories: $vm.selectedCategories)
 }
